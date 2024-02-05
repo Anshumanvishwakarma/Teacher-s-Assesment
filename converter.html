@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number to Words Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Number to Words Converter</h1>
+
+<select id="numberSelect" onchange="convertNumberToWords()">
+    <option value="0">Select a number</option>
+    <!-- Populate options from 1 to 1000 -->
+    <script>
+        for (let i = 1; i <= 1000; i++) {
+            document.write(`<option value="${i}">${i}</option>`);
+        }
+    </script>
+</select>
+
+<p id="result"></p>
+
+<script>
+    function convertNumberToWords() {
+        const numberSelect = document.getElementById('numberSelect');
+        const resultElement = document.getElementById('result');
+        const selectedNumber = parseInt(numberSelect.value);
+
+        if (selectedNumber >= 1 && selectedNumber <= 1000) {
+            const words = numberToWords(selectedNumber);
+            resultElement.textContent = `In words: ${words}`;
+        } else {
+            resultElement.textContent = '';
+        }
+    }
+
+    function numberToWords(number) {
+        const units = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+        const teens = ['Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+        const tens = ['', 'Ten', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+        if (number === 0) {
+            return 'Zero';
+        }
+
+        let words = '';
+
+        if (number >= 1000) {
+            words += units[Math.floor(number / 1000)] + ' Thousand ';
+            number %= 1000;
+        }
+
+        if (number >= 100) {
+            words += units[Math.floor(number / 100)] + ' Hundred ';
+            number %= 100;
+        }
+
+        if (number > 0) {
+            if (words !== '') {
+                words += 'and ';
+            }
+
+            if (number >= 11 && number <= 19) {
+                words += teens[number - 11] + ' ';
+            } else if (number === 10 || number >= 20) {
+                words += tens[Math.floor(number / 10)] + ' ';
+                number %= 10;
+            }
+
+            if (number > 0) {
+                words += units[number] + ' ';
+            }
+        }
+
+        return words.trim();
+    }
+</script>
+
+</body>
+</html>
